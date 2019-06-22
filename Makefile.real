@@ -128,7 +128,10 @@ uninstall:
 	@echo Reboot.
 	@echo
 
+EXCLUDE_CLEAN := kconf/zconf.lex.c kconf/zconf.tab.c
 .PHONY: clean
 clean:
+	@$(foreach f, $(EXCLUDE_CLEAN), mv $(f) $(f).orig;)
 	@$(MAKE) -f Makefile.build clean
 	@$(MAKE) -C kconf clean
+	@$(foreach f, $(EXCLUDE_CLEAN), mv $(f).orig $(f);)
