@@ -6,3 +6,11 @@ config NET_CORE
 	def_bool y
 config EXPERT
 	def_bool y
+config ARM64
+	def_bool y
+config NET_MEDIATEK_SOC_WED
+	def_bool n
+config ACPI
+	def_bool n
+config PM
+	def_bool y
