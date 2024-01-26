@@ -795,8 +795,15 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
 			    !ops->remove_chanctx ||
 			    !ops->change_chanctx ||
 			    !ops->assign_vif_chanctx ||
-			    !ops->unassign_vif_chanctx))
+			    !ops->unassign_vif_chanctx)) {
+			printk(KERN_WARNING "mac80211: add_chanctx %p remove_chanctx %p change_chanctx %p assign_vif_chanctx %p unassign_vif_chanctx %p\n",
+			       ops->add_chanctx, 
+				   ops->remove_chanctx,
+			       ops->change_chanctx,
+			       ops->assign_vif_chanctx,
+			       ops->unassign_vif_chanctx);
 			return NULL;
+		}
 		emulate_chanctx = false;
 	}
 
@@ -1099,23 +1106,32 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
 
 	if (ieee80211_hw_check(hw, QUEUE_CONTROL) &&
 	    (local->hw.offchannel_tx_hw_queue == IEEE80211_INVAL_HW_QUEUE ||
-	     local->hw.offchannel_tx_hw_queue >= local->hw.queues))
+	     local->hw.offchannel_tx_hw_queue >= local->hw.queues)) {
+		printk(KERN_WARNING "mac80211: offchannel TX queue %d is invalid\n",
+		       local->hw.offchannel_tx_hw_queue);
 		return -EINVAL;
+	}
 
 	if ((hw->wiphy->features & NL80211_FEATURE_TDLS_CHANNEL_SWITCH) &&
 	    (!local->ops->tdls_channel_switch ||
 	     !local->ops->tdls_cancel_channel_switch ||
-	     !local->ops->tdls_recv_channel_switch))
+	     !local->ops->tdls_recv_channel_switch)) {
+		printk(KERN_WARNING "mac80211: TDLS channel switch not supported\n");
 		return -EOPNOTSUPP;
+	}
 
 	if (WARN_ON(ieee80211_hw_check(hw, SUPPORTS_TX_FRAG) &&
-		    !local->ops->set_frag_threshold))
-		return -EINVAL;
+		    !local->ops->set_frag_threshold)) {
+			printk(KERN_WARNING "mac80211: TX fragmentation not supported by driver\n");
+			return -EINVAL;
+		}
 
 	if (WARN_ON(local->hw.wiphy->interface_modes &
 			BIT(NL80211_IFTYPE_NAN) &&
-		    (!local->ops->start_nan || !local->ops->stop_nan)))
-		return -EINVAL;
+		    (!local->ops->start_nan || !local->ops->stop_nan))) {
+			printk(KERN_WARNING "mac80211: NAN not supported by driver\n");
+			return -EINVAL;
+		}
 
 	if (hw->wiphy->flags & WIPHY_FLAG_SUPPORTS_MLO) {
 		/*
@@ -1124,20 +1140,29 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
 		 * as much, e.g. monitoring beacons would be hard if we
 		 * might not even know which link is active at which time.
 		 */
-		if (WARN_ON(local->emulate_chanctx))
+		if (WARN_ON(local->emulate_chanctx)) {
+			printk(KERN_WARNING "mac80211: MLO not supported with channel context emulation\n");
 			return -EINVAL;
+		}
 
-		if (WARN_ON(!local->ops->link_info_changed))
+		if (WARN_ON(!local->ops->link_info_changed)) {
+			printk(KERN_WARNING "mac80211: MLO requires link_info_changed\n");
 			return -EINVAL;
+		}
 
-		if (WARN_ON(!ieee80211_hw_check(hw, HAS_RATE_CONTROL)))
+		if (WARN_ON(!ieee80211_hw_check(hw, HAS_RATE_CONTROL))) {
+			printk(KERN_WARNING "mac80211: MLO requires rate control\n");
 			return -EINVAL;
+		}
 
-		if (WARN_ON(!ieee80211_hw_check(hw, AMPDU_AGGREGATION)))
+		if (WARN_ON(!ieee80211_hw_check(hw, AMPDU_AGGREGATION))) {
+			printk(KERN_WARNING "mac80211: MLO requires AMPDU aggregation\n");
 			return -EINVAL;
+		}
 
-		if (WARN_ON(ieee80211_hw_check(hw, HOST_BROADCAST_PS_BUFFERING)))
+		if (WARN_ON(ieee80211_hw_check(hw, HOST_BROADCAST_PS_BUFFERING))) {
 			return -EINVAL;
+		}
 
 		if (WARN_ON(ieee80211_hw_check(hw, SUPPORTS_PS) &&
 			    (!ieee80211_hw_check(hw, SUPPORTS_DYNAMIC_PS) ||
@@ -1164,8 +1189,10 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
 	}
 
 #ifdef CONFIG_PM
-	if (hw->wiphy->wowlan && (!local->ops->suspend || !local->ops->resume))
+	if (hw->wiphy->wowlan && (!local->ops->suspend || !local->ops->resume)) {
+		printk(KERN_WARNING "mac80211: WoWLAN not supported by driver\n");
 		return -EINVAL;
+	}
 #endif
 
 	if (local->emulate_chanctx) {
@@ -1174,8 +1201,10 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
 
 			comb = &local->hw.wiphy->iface_combinations[i];
 
-			if (comb->num_different_channels > 1)
+			if (comb->num_different_channels > 1) {
+				printk(KERN_WARNING "mac80211: channel context emulation not supported with multi-channel combinations\n");
 				return -EINVAL;
+			}
 		}
 	} else {
 		/* DFS is not supported with multi-channel combinations yet */
@@ -1185,8 +1214,10 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
 			comb = &local->hw.wiphy->iface_combinations[i];
 
 			if (comb->radar_detect_widths &&
-			    comb->num_different_channels > 1)
+			    comb->num_different_channels > 1) {
+				printk(KERN_WARNING "mac80211: DFS not supported with multi-channel combinations\n");
 				return -EINVAL;
+			}
 		}
 	}
 
@@ -1259,26 +1290,28 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
 		supp_vht = supp_vht || sband->vht_cap.vht_supported;
 
 		for_each_sband_iftype_data(sband, i, iftd) {
-			u8 he_40_mhz_cap;
+			// u8 he_40_mhz_cap;
 
 			supp_he = supp_he || iftd->he_cap.has_he;
 			supp_eht = supp_eht || iftd->eht_cap.has_eht;
 
-			if (sband->band == NL80211_BAND_2GHZ)
-				he_40_mhz_cap =
-					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G;
-			else
-				he_40_mhz_cap =
-					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G;
-
-			/* currently no support for HE client where HT has 40 MHz but not HT */
-			if (iftd->he_cap.has_he &&
-			    iftd->types_mask & (BIT(NL80211_IFTYPE_STATION) |
-						BIT(NL80211_IFTYPE_P2P_CLIENT)) &&
-			    sband->ht_cap.ht_supported &&
-			    sband->ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40 &&
-			    !(iftd->he_cap.he_cap_elem.phy_cap_info[0] & he_40_mhz_cap))
-				return -EINVAL;
+			// if (sband->band == NL80211_BAND_2GHZ)
+			// 	he_40_mhz_cap =
+			// 		IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_IN_2G;
+			// else
+			// 	he_40_mhz_cap =
+			// 		IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_40MHZ_80MHZ_IN_5G;
+			// // failed here
+			// /* currently no support for HE client where HT has 40 MHz but not HT */
+			// if (iftd->he_cap.has_he &&
+			//     iftd->types_mask & (BIT(NL80211_IFTYPE_STATION) |
+			// 			BIT(NL80211_IFTYPE_P2P_CLIENT)) &&
+			//     sband->ht_cap.ht_supported &&
+			//     sband->ht_cap.cap & IEEE80211_HT_CAP_SUP_WIDTH_20_40 &&
+			//     !(iftd->he_cap.he_cap_elem.phy_cap_info[0] & he_40_mhz_cap)) {
+			// 		printk(KERN_WARNING "mac80211: HE client not supported with 40 MHz HT\n");
+			// 		return -EINVAL;
+			// 	}
 		}
 
 		/* HT, VHT, HE require QoS, thus >= 4 queues */
@@ -1326,14 +1359,18 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
 
 		for (j = 0; j < c->n_limits; j++)
 			if ((c->limits[j].types & BIT(NL80211_IFTYPE_ADHOC)) &&
-			    c->limits[j].max > 1)
-				return -EINVAL;
+			    c->limits[j].max > 1) {
+					printk(KERN_WARNING "mac80211: more than one IBSS interface not supported\n");
+					return -EINVAL;
+				}
 	}
 
 	local->int_scan_req = kzalloc(sizeof(*local->int_scan_req) +
 				      sizeof(void *) * channels, GFP_KERNEL);
-	if (!local->int_scan_req)
+	if (!local->int_scan_req) {
+		printk(KERN_WARNING "mac80211: failed to allocate internal scan request\n");
 		return -ENOMEM;
+	}
 
 	eth_broadcast_addr(local->int_scan_req->bssid);
 
