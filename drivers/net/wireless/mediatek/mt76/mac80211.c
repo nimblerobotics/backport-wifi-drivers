@@ -566,47 +566,6 @@ void mt76_unregister_phy(struct mt76_phy *phy)
 }
 EXPORT_SYMBOL_GPL(mt76_unregister_phy);
 
-int mt76_create_page_pool(struct mt76_dev *dev, struct mt76_queue *q)
-{
-	struct page_pool_params pp_params = {
-		.order = 0,
-		.flags = 0,
-		.nid = NUMA_NO_NODE,
-		.dev = dev->dma_dev,
-	};
-	int idx = q - dev->q_rx;
-
-	switch (idx) {
-	case MT_RXQ_MAIN:
-	case MT_RXQ_BAND1:
-	case MT_RXQ_BAND2:
-		pp_params.pool_size = 256;
-		break;
-	default:
-		pp_params.pool_size = 16;
-		break;
-	}
-
-	if (mt76_is_mmio(dev)) {
-		/* rely on page_pool for DMA mapping */
-		pp_params.flags |= PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
-		pp_params.dma_dir = DMA_FROM_DEVICE;
-		pp_params.max_len = PAGE_SIZE;
-		pp_params.offset = 0;
-	}
-
-	q->page_pool = page_pool_create(&pp_params);
-	if (IS_ERR(q->page_pool)) {
-		int err = PTR_ERR(q->page_pool);
-
-		q->page_pool = NULL;
-		return err;
-	}
-
-	return 0;
-}
-EXPORT_SYMBOL_GPL(mt76_create_page_pool);
-
 struct mt76_dev *
 mt76_alloc_device(struct device *pdev, unsigned int size,
 		  const struct ieee80211_ops *ops,

@@ -33,8 +33,8 @@ mt76_napi_threaded_set(void *data, u64 val)
 	if (!mt76_is_mmio(dev))
 		return -EOPNOTSUPP;
 
-	if (dev->napi_dev.threaded != val)
-		return dev_set_threaded(&dev->napi_dev, val);
+	// if (dev->napi_dev.threaded != val)
+	// 	return dev_set_threaded(&dev->napi_dev, val);
 
 	return 0;
 }
@@ -42,9 +42,9 @@ mt76_napi_threaded_set(void *data, u64 val)
 static int
 mt76_napi_threaded_get(void *data, u64 *val)
 {
-	struct mt76_dev *dev = data;
+	// struct mt76_dev *dev = data;
 
-	*val = dev->napi_dev.threaded;
+	*val = 0;
 	return 0;
 }
 

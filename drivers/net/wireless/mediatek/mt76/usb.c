@@ -708,7 +708,6 @@ mt76u_free_rx_queue(struct mt76_dev *dev, struct mt76_queue *q)
 	page = virt_to_page(q->rx_page.va);
 	__page_frag_cache_drain(page, q->rx_page.pagecnt_bias);
 	memset(&q->rx_page, 0, sizeof(q->rx_page));
-	q->page_pool = NULL;
 }
 
 static void mt76u_free_rx(struct mt76_dev *dev)

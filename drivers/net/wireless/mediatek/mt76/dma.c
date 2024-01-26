@@ -871,7 +871,7 @@ mt76_dma_rx_process(struct mt76_dev *dev, struct mt76_queue *q, int budget)
 		    !(dev->drv->rx_check(dev, data, len)))
 			goto free_frag;
 
-		skb = napi_build_skb(data, q->buf_size);
+		skb = build_skb(data, q->buf_size);
 		if (!skb)
 			goto free_frag;
 
@@ -934,7 +934,7 @@ mt76_dma_init(struct mt76_dev *dev,
 	init_dummy_netdev(&dev->tx_napi_dev);
 	snprintf(dev->napi_dev.name, sizeof(dev->napi_dev.name), "%s",
 		 wiphy_name(dev->hw->wiphy));
-	dev->napi_dev.threaded = 1;
+	// dev->napi_dev.threaded = 1;
 	init_completion(&dev->mmio.wed_reset);
 	init_completion(&dev->mmio.wed_reset_complete);
 
