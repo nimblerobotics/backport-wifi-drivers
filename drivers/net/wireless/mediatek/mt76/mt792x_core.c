@@ -612,6 +612,7 @@ mt792x_get_offload_capability(struct device *dev, const char *fw_wm)
 	u8 offload_caps = 0;
 
 	ret = request_firmware(&fw, fw_wm, dev);
+	printk(KERN_INFO "mt792x: request_firmware ret=%d\n", ret);
 	if (ret)
 		return ret;
 
@@ -670,7 +671,9 @@ mt792x_get_mac80211_ops(struct device *dev,
 		return NULL;
 
 	*fw_features = mt792x_get_offload_capability(dev, drv_data);
+	printk(KERN_INFO "mt792x: fw_features=0x%x\n", *fw_features);
 	if (!(*fw_features & MT792x_FW_CAP_CNM)) {
+		printk(KERN_WARNING "mt792x: firmware does not support CNM\n");
 		ops->remain_on_channel = NULL;
 		ops->cancel_remain_on_channel = NULL;
 		ops->add_chanctx = NULL;
@@ -841,9 +844,9 @@ int mt792x_load_firmware(struct mt792x_dev *dev)
 		return -EIO;
 	}
 
-#ifdef CPTCFG_PM
+// #ifdef CPTCFG_PM
 	dev->mt76.hw->wiphy->wowlan = &mt76_connac_wowlan_support;
-#endif /* CPTCFG_PM */
+// #endif /* CPTCFG_PM */
 
 	dev_dbg(dev->mt76.dev, "Firmware init done\n");
 

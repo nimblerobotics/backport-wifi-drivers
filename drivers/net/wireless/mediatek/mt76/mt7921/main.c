@@ -1053,7 +1053,7 @@ mt7921_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant)
 	return 0;
 }
 
-#ifdef CPTCFG_PM
+// #ifdef CPTCFG_PM
 static int mt7921_suspend(struct ieee80211_hw *hw,
 			  struct cfg80211_wowlan *wowlan)
 {
@@ -1110,7 +1110,7 @@ static void mt7921_set_rekey_data(struct ieee80211_hw *hw,
 	mt76_connac_mcu_update_gtk_rekey(hw, vif, data);
 	mt792x_mutex_release(dev);
 }
-#endif /* CPTCFG_PM */
+// #endif /* CPTCFG_PM */
 
 static void mt7921_sta_set_decap_offload(struct ieee80211_hw *hw,
 					 struct ieee80211_vif *vif,
@@ -1398,12 +1398,12 @@ const struct ieee80211_ops mt7921_ops = {
 	.sched_scan_stop = mt7921_stop_sched_scan,
 	CFG80211_TESTMODE_CMD(mt7921_testmode_cmd)
 	CFG80211_TESTMODE_DUMP(mt7921_testmode_dump)
-#ifdef CPTCFG_PM
+// #ifdef CPTCFG_PM
 	.suspend = mt7921_suspend,
 	.resume = mt7921_resume,
 	.set_wakeup = mt792x_set_wakeup,
 	.set_rekey_data = mt7921_set_rekey_data,
-#endif /* CPTCFG_PM */
+// #endif /* CPTCFG_PM */
 	.flush = mt792x_flush,
 	.set_sar_specs = mt7921_set_sar_specs,
 	.remain_on_channel = mt7921_remain_on_channel,

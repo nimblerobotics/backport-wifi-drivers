@@ -653,25 +653,36 @@ int mt76_register_device(struct mt76_dev *dev, bool vht,
 	dev_set_drvdata(dev->dev, dev);
 	mt76_wcid_init(&dev->global_wcid);
 	ret = mt76_phy_init(phy, hw);
-	if (ret)
+	if (ret) {
+		printk(KERN_ERR "%s: failed to initialize phy\n", __func__);
 		return ret;
+	}
 
 	if (phy->cap.has_2ghz) {
 		ret = mt76_init_sband_2g(phy, rates, n_rates);
-		if (ret)
+		if (ret) {
+			printk(KERN_ERR "%s: failed to initialize 2ghz band\n",
+			       __func__);
 			return ret;
+		}
 	}
 
 	if (phy->cap.has_5ghz) {
 		ret = mt76_init_sband_5g(phy, rates + 4, n_rates - 4, vht);
-		if (ret)
+		if (ret) {
+			printk(KERN_ERR "%s: failed to initialize 5ghz band\n",
+			       __func__);
 			return ret;
+		}
 	}
 
 	if (phy->cap.has_6ghz) {
 		ret = mt76_init_sband_6g(phy, rates + 4, n_rates - 4);
-		if (ret)
+		if (ret) {
+			printk(KERN_ERR "%s: failed to initialize 6ghz band\n",
+			       __func__);
 			return ret;
+		}
 	}
 
 	wiphy_read_of_freq_limits(hw->wiphy);
@@ -681,13 +692,18 @@ int mt76_register_device(struct mt76_dev *dev, bool vht,
 
 	if (IS_ENABLED(CPTCFG_MT76_LEDS)) {
 		ret = mt76_led_init(phy);
-		if (ret)
+		if (ret) {
+			printk(KERN_ERR "%s: failed to initialize leds\n",
+			       __func__);
 			return ret;
+		}
 	}
 
 	ret = ieee80211_register_hw(hw);
-	if (ret)
+	if (ret) {
+		printk(KERN_ERR "%s: failed to register hw\n", __func__);
 		return ret;
+	}
 
 	WARN_ON(mt76_worker_setup(hw, &dev->tx_worker, NULL, "tx"));
 	set_bit(MT76_STATE_REGISTERED, &phy->state);

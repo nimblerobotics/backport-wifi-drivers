@@ -304,7 +304,7 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
 		ret = -ENOMEM;
 		goto err_free_pci_vec;
 	}
-
+	// failed here
 	mdev = mt76_alloc_device(&pdev->dev, sizeof(*dev), ops, &drv_ops);
 	if (!mdev) {
 		ret = -ENOMEM;
