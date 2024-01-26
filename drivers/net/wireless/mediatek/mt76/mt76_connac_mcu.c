@@ -2250,7 +2250,7 @@ int mt76_connac_mcu_set_p2p_oppps(struct ieee80211_hw *hw,
 }
 EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_p2p_oppps);
 
-#ifdef CPTCFG_PM
+// #ifdef CPTCFG_PM
 
 const struct wiphy_wowlan_support mt76_connac_wowlan_support = {
 	.flags = WIPHY_WOWLAN_MAGIC_PKT | WIPHY_WOWLAN_DISCONNECT |
@@ -2564,7 +2564,7 @@ void mt76_connac_mcu_set_suspend_iter(void *priv, u8 *mac,
 	mt76_connac_mcu_set_wow_ctrl(phy, vif, suspend, wowlan);
 }
 EXPORT_SYMBOL_GPL(mt76_connac_mcu_set_suspend_iter);
-#endif /* CPTCFG_PM */
+// #endif /* CPTCFG_PM */
 
 u32 mt76_connac_mcu_reg_rr(struct mt76_dev *dev, u32 offset)
 {
