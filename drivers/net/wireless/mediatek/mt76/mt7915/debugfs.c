@@ -1308,7 +1308,7 @@ bool mt7915_debugfs_rx_log(struct mt7915_dev *dev, const void *data, int len)
 	return true;
 }
 
-#ifdef CONFIG_MAC80211_DEBUGFS
+#ifdef CPTCFG_MAC80211_DEBUGFS
 /** per-station debugfs **/
 
 static ssize_t mt7915_sta_fixed_rate_set(struct file *file,

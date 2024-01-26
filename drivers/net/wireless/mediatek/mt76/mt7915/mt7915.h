@@ -224,7 +224,7 @@ struct mt7915_phy {
 	struct mt76_mib_stats mib;
 	struct mt76_channel_state state_ts;
 
-#ifdef CONFIG_NL80211_TESTMODE
+#ifdef CPTCFG_NL80211_TESTMODE
 	struct {
 		u32 *reg_backup;
 
@@ -279,7 +279,7 @@ struct mt7915_dev {
 
 	/* protects coredump data */
 	struct mutex dump_mutex;
-#ifdef CONFIG_DEV_COREDUMP
+#ifdef CPTCFG_DEV_COREDUMP
 	struct {
 		struct mt7915_crash_data *crash_data;
 	} coredump;
@@ -390,7 +390,7 @@ extern struct pci_driver mt7915_pci_driver;
 extern struct pci_driver mt7915_hif_driver;
 extern struct platform_driver mt798x_wmac_driver;
 
-#ifdef CONFIG_MT798X_WMAC
+#ifdef CPTCFG_MT798X_WMAC
 int mt7986_wmac_enable(struct mt7915_dev *dev);
 void mt7986_wmac_disable(struct mt7915_dev *dev);
 #else
@@ -588,7 +588,7 @@ int mt7915_mcu_wed_enable_rx_stats(struct mt7915_dev *dev);
 int mt7915_init_debugfs(struct mt7915_phy *phy);
 void mt7915_debugfs_rx_fw_monitor(struct mt7915_dev *dev, const void *data, int len);
 bool mt7915_debugfs_rx_log(struct mt7915_dev *dev, const void *data, int len);
-#ifdef CONFIG_MAC80211_DEBUGFS
+#ifdef CPTCFG_MAC80211_DEBUGFS
 void mt7915_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 			    struct ieee80211_sta *sta, struct dentry *dir);
 #endif

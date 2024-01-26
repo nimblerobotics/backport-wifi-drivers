@@ -7,7 +7,7 @@
 #include "mt76.h"
 #include "dma.h"
 
-#if IS_ENABLED(CONFIG_NET_MEDIATEK_SOC_WED)
+#if IS_ENABLED(CPTCFG_NET_MEDIATEK_SOC_WED)
 
 #define Q_READ(_dev, _q, _field) ({					\
 	u32 _offset = offsetof(struct mt76_queue_regs, _field);		\
@@ -571,7 +571,7 @@ unmap:
 				 tx_info.buf[n].len, DMA_TO_DEVICE);
 
 free:
-#ifdef CONFIG_NL80211_TESTMODE
+#ifdef CPTCFG_NL80211_TESTMODE
 	/* fix tx_done accounting on queue overflow */
 	if (mt76_is_testmode_skb(dev, skb, &hw)) {
 		struct mt76_phy *phy = hw->priv;
@@ -641,7 +641,7 @@ mt76_dma_rx_fill(struct mt76_dev *dev, struct mt76_queue *q)
 
 int mt76_dma_wed_setup(struct mt76_dev *dev, struct mt76_queue *q, bool reset)
 {
-#ifdef CONFIG_NET_MEDIATEK_SOC_WED
+#ifdef CPTCFG_NET_MEDIATEK_SOC_WED
 	struct mtk_wed_device *wed = &dev->mmio.wed;
 	int ret, type, ring;
 	u8 flags;
@@ -824,7 +824,7 @@ mt76_dma_rx_process(struct mt76_dev *dev, struct mt76_queue *q, int budget)
 	bool allow_direct = !mt76_queue_is_wed_rx(q);
 	bool more;
 
-	if (IS_ENABLED(CONFIG_NET_MEDIATEK_SOC_WED) &&
+	if (IS_ENABLED(CPTCFG_NET_MEDIATEK_SOC_WED) &&
 	    q->flags == MT_WED_Q_TXFREE) {
 		dma_idx = Q_READ(dev, q, dma_idx);
 		check_ddone = true;

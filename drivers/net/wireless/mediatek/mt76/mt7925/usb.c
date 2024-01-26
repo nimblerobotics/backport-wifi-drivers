@@ -238,7 +238,7 @@ error:
 	return ret;
 }
 
-#ifdef CONFIG_PM
+#ifdef CPTCFG_PM
 static int mt7925u_suspend(struct usb_interface *intf, pm_message_t state)
 {
 	struct mt792x_dev *dev = usb_get_intfdata(intf);
@@ -307,7 +307,7 @@ failed:
 
 	return err;
 }
-#endif /* CONFIG_PM */
+#endif /* CPTCFG_PM */
 
 MODULE_DEVICE_TABLE(usb, mt7925u_device_table);
 MODULE_FIRMWARE(MT7925_FIRMWARE_WM);
@@ -318,11 +318,11 @@ static struct usb_driver mt7925u_driver = {
 	.id_table	= mt7925u_device_table,
 	.probe		= mt7925u_probe,
 	.disconnect	= mt792xu_disconnect,
-#ifdef CONFIG_PM
+#ifdef CPTCFG_PM
 	.suspend	= mt7925u_suspend,
 	.resume		= mt7925u_resume,
 	.reset_resume	= mt7925u_resume,
-#endif /* CONFIG_PM */
+#endif /* CPTCFG_PM */
 	.soft_unbind	= 1,
 	.disable_hub_initiated_lpm = 1,
 };

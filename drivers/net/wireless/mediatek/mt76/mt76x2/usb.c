@@ -136,11 +136,11 @@ static struct usb_driver mt76x2u_driver = {
 	.id_table	= mt76x2u_device_table,
 	.probe		= mt76x2u_probe,
 	.disconnect	= mt76x2u_disconnect,
-#ifdef CONFIG_PM
+#ifdef CPTCFG_PM
 	.suspend	= mt76x2u_suspend,
 	.resume		= mt76x2u_resume,
 	.reset_resume	= mt76x2u_resume,
-#endif /* CONFIG_PM */
+#endif /* CPTCFG_PM */
 	.soft_unbind	= 1,
 	.disable_hub_initiated_lpm = 1,
 };

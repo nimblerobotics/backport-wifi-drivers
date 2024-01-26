@@ -30,7 +30,7 @@ static int mt76_get_of_eeprom_data(struct mt76_dev *dev, void *eep, int len)
 
 static int mt76_get_of_epprom_from_mtd(struct mt76_dev *dev, void *eep, int offset, int len)
 {
-#ifdef CONFIG_MTD
+#ifdef CPTCFG_MTD
 	struct device_node *np = dev->dev->of_node;
 	struct mtd_info *mtd;
 	const __be32 *list;
@@ -93,7 +93,7 @@ static int mt76_get_of_epprom_from_mtd(struct mt76_dev *dev, void *eep, int offs
 					   &data[i]);
 	}
 
-#ifdef CONFIG_NL80211_TESTMODE
+#ifdef CPTCFG_NL80211_TESTMODE
 	dev->test_mtd.name = devm_kstrdup(dev->dev, part, GFP_KERNEL);
 	dev->test_mtd.offset = offset;
 #endif
@@ -349,7 +349,7 @@ s8 mt76_get_rate_power_limits(struct mt76_phy *phy,
 
 	memset(dest, target_power, sizeof(*dest));
 
-	if (!IS_ENABLED(CONFIG_OF))
+	if (!IS_ENABLED(CPTCFG_OF))
 		return target_power;
 
 	np = mt76_find_power_limits_node(dev);

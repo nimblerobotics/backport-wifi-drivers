@@ -11,7 +11,7 @@
 obj-$(CPTCFG_WLAN_VENDOR_INTEL) += intel/
 #obj-$(CONFIG_WLAN_VENDOR_INTERSIL) += intersil/
 #obj-$(CONFIG_WLAN_VENDOR_MARVELL) += marvell/
-obj-$(CONFIG_WLAN_VENDOR_MEDIATEK) += mediatek/
+obj-$(CPTCFG_WLAN_VENDOR_MEDIATEK) += mediatek/
 #obj-$(CONFIG_WLAN_VENDOR_MICROCHIP) += microchip/
 #obj-$(CONFIG_WLAN_VENDOR_PURELIFI) += purelifi/
 #obj-$(CONFIG_WLAN_VENDOR_QUANTENNA) += quantenna/

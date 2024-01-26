@@ -172,10 +172,10 @@ static struct pci_driver mt76pci_driver = {
 	.id_table	= mt76x2e_device_table,
 	.probe		= mt76x2e_probe,
 	.remove		= mt76x2e_remove,
-#ifdef CONFIG_PM
+#ifdef CPTCFG_PM
 	.suspend	= mt76x2e_suspend,
 	.resume		= mt76x2e_resume,
-#endif /* CONFIG_PM */
+#endif /* CPTCFG_PM */
 };
 
 module_pci_driver(mt76pci_driver);

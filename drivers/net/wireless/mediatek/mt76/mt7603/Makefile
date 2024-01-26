@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-only
-obj-$(CONFIG_MT7603E) += mt7603e.o
+obj-$(CPTCFG_MT7603E) += mt7603e.o
 
 mt7603e-y := \
 	pci.o soc.o main.o init.o mcu.o \

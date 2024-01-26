@@ -55,7 +55,7 @@ struct mt7996_mem_region {
 	const char *name;
 };
 
-#ifdef CONFIG_DEV_COREDUMP
+#ifdef CPTCFG_DEV_COREDUMP
 
 const struct mt7996_mem_region *
 mt7996_coredump_get_mem_layout(struct mt7996_dev *dev, u32 *num);
@@ -64,7 +64,7 @@ int mt7996_coredump_submit(struct mt7996_dev *dev);
 int mt7996_coredump_register(struct mt7996_dev *dev);
 void mt7996_coredump_unregister(struct mt7996_dev *dev);
 
-#else /* CONFIG_DEV_COREDUMP */
+#else /* CPTCFG_DEV_COREDUMP */
 
 static inline const struct mt7996_mem_region *
 mt7996_coredump_get_mem_layout(struct mt7996_dev *dev, u32 *num)
@@ -92,6 +92,6 @@ static inline void mt7996_coredump_unregister(struct mt7996_dev *dev)
 {
 }
 
-#endif /* CONFIG_DEV_COREDUMP */
+#endif /* CPTCFG_DEV_COREDUMP */
 
 #endif /* _COREDUMP_H_ */

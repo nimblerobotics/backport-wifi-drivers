@@ -28,7 +28,7 @@ void mt76_pci_disable_aspm(struct pci_dev *pdev)
 		 (aspm_conf & PCI_EXP_LNKCTL_ASPM_L0S) ? "L0s" : "",
 		 (aspm_conf & PCI_EXP_LNKCTL_ASPM_L1) ? "L1" : "");
 
-	if (IS_ENABLED(CONFIG_PCIEASPM)) {
+	if (IS_ENABLED(CPTCFG_PCIEASPM)) {
 		int err;
 
 		err = pci_disable_link_state(pdev, aspm_conf);

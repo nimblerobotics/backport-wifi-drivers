@@ -19,7 +19,7 @@ static const struct ieee80211_iface_limit if_limits[] = {
 	}, {
 		.max = 16,
 		.types = BIT(NL80211_IFTYPE_AP)
-#ifdef CONFIG_MAC80211_MESH
+#ifdef CPTCFG_MAC80211_MESH
 			 | BIT(NL80211_IFTYPE_MESH_POINT)
 #endif
 	}, {
@@ -208,7 +208,7 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
 	phy->throttle_temp[MT7915_CRIT_TEMP_IDX] = MT7915_CRIT_TEMP;
 	phy->throttle_temp[MT7915_MAX_TEMP_IDX] = MT7915_MAX_TEMP;
 
-	if (!IS_REACHABLE(CONFIG_HWMON))
+	if (!IS_REACHABLE(CPTCFG_HWMON))
 		return 0;
 
 	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, phy,
@@ -447,7 +447,7 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
 	wiphy->available_antennas_tx = phy->mt76->antenna_mask;
 
 	/* init led callbacks */
-	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
+	if (IS_ENABLED(CPTCFG_MT76_LEDS)) {
 		mphy->leds.cdev.brightness_set = mt7915_led_set_brightness;
 		mphy->leds.cdev.blink_set = mt7915_led_set_blink;
 	}
@@ -518,7 +518,7 @@ mt7915_mac_init_band(struct mt7915_dev *dev, u8 band)
 static void
 mt7915_init_led_mux(struct mt7915_dev *dev)
 {
-	if (!IS_ENABLED(CONFIG_MT76_LEDS))
+	if (!IS_ENABLED(CPTCFG_MT76_LEDS))
 		return;
 
 	if (dev->dbdc_support) {
@@ -878,7 +878,7 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_phy *phy,
 			sts_160 = 0;
 	}
 
-#ifdef CONFIG_MAC80211_MESH
+#ifdef CPTCFG_MAC80211_MESH
 	if (vif == NL80211_IFTYPE_MESH_POINT)
 		return;
 #endif
@@ -989,7 +989,7 @@ mt7915_init_he_caps(struct mt7915_phy *phy, enum nl80211_band band,
 		switch (i) {
 		case NL80211_IFTYPE_STATION:
 		case NL80211_IFTYPE_AP:
-#ifdef CONFIG_MAC80211_MESH
+#ifdef CPTCFG_MAC80211_MESH
 		case NL80211_IFTYPE_MESH_POINT:
 #endif
 			break;
@@ -1209,7 +1209,7 @@ int mt7915_register_device(struct mt7915_dev *dev)
 
 	mt7915_init_wiphy(&dev->phy);
 
-#ifdef CONFIG_NL80211_TESTMODE
+#ifdef CPTCFG_NL80211_TESTMODE
 	dev->mt76.test_ops = &mt7915_testmode_ops;
 #endif
 

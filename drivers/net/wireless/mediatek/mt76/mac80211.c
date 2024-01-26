@@ -491,7 +491,7 @@ mt76_alloc_phy(struct mt76_dev *dev, unsigned int size,
 	hw->wiphy->interface_modes =
 		BIT(NL80211_IFTYPE_STATION) |
 		BIT(NL80211_IFTYPE_AP) |
-#ifdef CONFIG_MAC80211_MESH
+#ifdef CPTCFG_MAC80211_MESH
 		BIT(NL80211_IFTYPE_MESH_POINT) |
 #endif
 		BIT(NL80211_IFTYPE_P2P_CLIENT) |
@@ -529,7 +529,7 @@ int mt76_register_phy(struct mt76_phy *phy, bool vht,
 			return ret;
 	}
 
-	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
+	if (IS_ENABLED(CPTCFG_MT76_LEDS)) {
 		ret = mt76_led_init(phy);
 		if (ret)
 			return ret;
@@ -558,7 +558,7 @@ void mt76_unregister_phy(struct mt76_phy *phy)
 	if (!test_bit(MT76_STATE_REGISTERED, &phy->state))
 		return;
 
-	if (IS_ENABLED(CONFIG_MT76_LEDS))
+	if (IS_ENABLED(CPTCFG_MT76_LEDS))
 		mt76_led_cleanup(phy);
 	mt76_tx_status_check(dev, true);
 	ieee80211_unregister_hw(phy->hw);
@@ -609,7 +609,7 @@ mt76_alloc_device(struct device *pdev, unsigned int size,
 	hw->wiphy->interface_modes =
 		BIT(NL80211_IFTYPE_STATION) |
 		BIT(NL80211_IFTYPE_AP) |
-#ifdef CONFIG_MAC80211_MESH
+#ifdef CPTCFG_MAC80211_MESH
 		BIT(NL80211_IFTYPE_MESH_POINT) |
 #endif
 		BIT(NL80211_IFTYPE_P2P_CLIENT) |
@@ -679,7 +679,7 @@ int mt76_register_device(struct mt76_dev *dev, bool vht,
 	mt76_check_sband(&dev->phy, &phy->sband_5g, NL80211_BAND_5GHZ);
 	mt76_check_sband(&dev->phy, &phy->sband_6g, NL80211_BAND_6GHZ);
 
-	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
+	if (IS_ENABLED(CPTCFG_MT76_LEDS)) {
 		ret = mt76_led_init(phy);
 		if (ret)
 			return ret;
@@ -704,7 +704,7 @@ void mt76_unregister_device(struct mt76_dev *dev)
 	if (!test_bit(MT76_STATE_REGISTERED, &dev->phy.state))
 		return;
 
-	if (IS_ENABLED(CONFIG_MT76_LEDS))
+	if (IS_ENABLED(CPTCFG_MT76_LEDS))
 		mt76_led_cleanup(&dev->phy);
 	mt76_tx_status_check(dev, true);
 	mt76_wcid_cleanup(dev, &dev->global_wcid);
@@ -792,7 +792,7 @@ void mt76_rx(struct mt76_dev *dev, enum mt76_rxq_id q, struct sk_buff *skb)
 		return;
 	}
 
-#ifdef CONFIG_NL80211_TESTMODE
+#ifdef CPTCFG_NL80211_TESTMODE
 	if (phy->test.state == MT76_TM_STATE_RX_FRAMES) {
 		phy->test.rx_stats.packets[q]++;
 		if (status->flag & RX_FLAG_FAILED_FCS_CRC)
@@ -1765,7 +1765,7 @@ EXPORT_SYMBOL_GPL(mt76_ethtool_worker);
 
 void mt76_ethtool_page_pool_stats(struct mt76_dev *dev, u64 *data, int *index)
 {
-#ifdef CONFIG_PAGE_POOL_STATS
+#ifdef CPTCFG_PAGE_POOL_STATS
 	struct page_pool_stats stats = {};
 	int i;
 

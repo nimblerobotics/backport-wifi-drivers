@@ -738,7 +738,7 @@ static int __init mt7603_init(void)
 	if (ret)
 		return ret;
 
-#ifdef CONFIG_PCI
+#ifdef CPTCFG_PCI
 	ret = pci_register_driver(&mt7603_pci_driver);
 	if (ret)
 		platform_driver_unregister(&mt76_wmac_driver);
@@ -748,7 +748,7 @@ static int __init mt7603_init(void)
 
 static void __exit mt7603_exit(void)
 {
-#ifdef CONFIG_PCI
+#ifdef CPTCFG_PCI
 	pci_unregister_driver(&mt7603_pci_driver);
 #endif
 	platform_driver_unregister(&mt76_wmac_driver);

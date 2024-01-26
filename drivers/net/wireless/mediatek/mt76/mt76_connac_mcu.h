@@ -17,7 +17,7 @@
 #define DL_MODE_RESET_SEC_IV		BIT(3)
 #define DL_MODE_WORKING_PDA_CR4		BIT(4)
 #define DL_MODE_VALID_RAM_ENTRY         BIT(5)
-#define DL_CONFIG_ENCRY_MODE_SEL	BIT(6)
+#define DL_CPTCFG_ENCRY_MODE_SEL	BIT(6)
 #define DL_MODE_NEED_RSP		BIT(31)
 
 #define FW_START_OVERRIDE		BIT(0)
@@ -1784,7 +1784,7 @@ mt76_connac_mcu_gen_dl_mode(struct mt76_dev *dev, u8 feature_set, bool is_wa)
 	       DL_MODE_ENCRYPT | DL_MODE_RESET_SEC_IV : 0;
 	if (is_mt7921(dev) || is_mt7925(dev))
 		ret |= feature_set & FW_FEATURE_ENCRY_MODE ?
-		       DL_CONFIG_ENCRY_MODE_SEL : 0;
+		       DL_CPTCFG_ENCRY_MODE_SEL : 0;
 	ret |= FIELD_PREP(DL_MODE_KEY_IDX,
 			  FIELD_GET(FW_FEATURE_SET_KEY_IDX, feature_set));
 	ret |= DL_MODE_NEED_RSP;

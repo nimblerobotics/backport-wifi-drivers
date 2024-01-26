@@ -210,7 +210,7 @@ struct mt7996_dev {
 
 	/* protects coredump data */
 	struct mutex dump_mutex;
-#ifdef CONFIG_DEV_COREDUMP
+#ifdef CPTCFG_DEV_COREDUMP
 	struct {
 		struct mt7996_crash_data *crash_data;
 	} coredump;
@@ -491,7 +491,7 @@ int mt7996_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
 int mt7996_mcu_wtbl_update_hdr_trans(struct mt7996_dev *dev,
 				     struct ieee80211_vif *vif,
 				     struct ieee80211_sta *sta);
-#ifdef CONFIG_MAC80211_DEBUGFS
+#ifdef CPTCFG_MAC80211_DEBUGFS
 void mt7996_sta_add_debugfs(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 			    struct ieee80211_sta *sta, struct dentry *dir);
 #endif

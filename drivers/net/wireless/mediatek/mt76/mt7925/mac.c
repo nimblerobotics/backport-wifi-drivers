@@ -1425,7 +1425,7 @@ bool mt7925_usb_sdio_tx_status_data(struct mt76_dev *mdev, u8 *update)
 }
 EXPORT_SYMBOL_GPL(mt7925_usb_sdio_tx_status_data);
 
-#if IS_ENABLED(CONFIG_IPV6)
+#if IS_ENABLED(CPTCFG_IPV6)
 void mt7925_set_ipv6_ns_work(struct work_struct *work)
 {
 	struct mt792x_dev *dev = container_of(work, struct mt792x_dev,

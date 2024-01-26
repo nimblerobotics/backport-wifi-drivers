@@ -132,7 +132,7 @@ struct mt792x_phy {
 
 	struct sk_buff_head scan_event_list;
 	struct delayed_work scan_work;
-#ifdef CONFIG_ACPI
+#ifdef CPTCFG_ACPI
 	void *acpisar;
 #endif
 	void *clc[MT792x_CLC_MAX_NUM];
@@ -378,7 +378,7 @@ int __mt792xe_mcu_drv_pmctrl(struct mt792x_dev *dev);
 int mt792xe_mcu_drv_pmctrl(struct mt792x_dev *dev);
 int mt792xe_mcu_fw_pmctrl(struct mt792x_dev *dev);
 
-#ifdef CONFIG_ACPI
+#ifdef CPTCFG_ACPI
 int mt792x_init_acpi_sar(struct mt792x_dev *dev);
 int mt792x_init_acpi_sar_power(struct mt792x_phy *phy, bool set_default);
 u8 mt792x_acpi_get_flags(struct mt792x_phy *phy);

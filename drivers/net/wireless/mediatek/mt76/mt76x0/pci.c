@@ -236,7 +236,7 @@ mt76x0e_remove(struct pci_dev *pdev)
 	mt76_free_device(mdev);
 }
 
-#ifdef CONFIG_PM
+#ifdef CPTCFG_PM
 static int mt76x0e_suspend(struct pci_dev *pdev, pm_message_t state)
 {
 	struct mt76_dev *mdev = pci_get_drvdata(pdev);
@@ -290,7 +290,7 @@ static int mt76x0e_resume(struct pci_dev *pdev)
 
 	return mt76x0e_init_hardware(dev, true);
 }
-#endif /* CONFIG_PM */
+#endif /* CPTCFG_PM */
 
 static const struct pci_device_id mt76x0e_device_table[] = {
 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7610) },
@@ -309,10 +309,10 @@ static struct pci_driver mt76x0e_driver = {
 	.id_table	= mt76x0e_device_table,
 	.probe		= mt76x0e_probe,
 	.remove		= mt76x0e_remove,
-#ifdef CONFIG_PM
+#ifdef CPTCFG_PM
 	.suspend	= mt76x0e_suspend,
 	.resume		= mt76x0e_resume,
-#endif /* CONFIG_PM */
+#endif /* CPTCFG_PM */
 };
 
 module_pci_driver(mt76x0e_driver);

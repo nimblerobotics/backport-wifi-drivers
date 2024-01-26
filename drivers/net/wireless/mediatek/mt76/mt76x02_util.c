@@ -37,7 +37,7 @@ static const struct ieee80211_iface_limit mt76x02_if_limits[] = {
 	}, {
 		.max = 8,
 		.types = BIT(NL80211_IFTYPE_STATION) |
-#ifdef CONFIG_MAC80211_MESH
+#ifdef CPTCFG_MAC80211_MESH
 			 BIT(NL80211_IFTYPE_MESH_POINT) |
 #endif
 			 BIT(NL80211_IFTYPE_P2P_CLIENT) |
@@ -53,7 +53,7 @@ static const struct ieee80211_iface_limit mt76x02u_if_limits[] = {
 	}, {
 		.max = 2,
 		.types = BIT(NL80211_IFTYPE_STATION) |
-#ifdef CONFIG_MAC80211_MESH
+#ifdef CPTCFG_MAC80211_MESH
 			 BIT(NL80211_IFTYPE_MESH_POINT) |
 #endif
 			 BIT(NL80211_IFTYPE_P2P_CLIENT) |
@@ -165,7 +165,7 @@ int mt76x02_init_device(struct mt76x02_dev *dev)
 		wiphy->n_iface_combinations = ARRAY_SIZE(mt76x02_if_comb);
 
 		/* init led callbacks */
-		if (IS_ENABLED(CONFIG_MT76_LEDS)) {
+		if (IS_ENABLED(CPTCFG_MT76_LEDS)) {
 			dev->mphy.leds.cdev.brightness_set =
 					mt76x02_led_set_brightness;
 			dev->mphy.leds.cdev.blink_set = mt76x02_led_set_blink;
@@ -674,7 +674,7 @@ void mt76x02_bss_info_changed(struct ieee80211_hw *hw,
 }
 EXPORT_SYMBOL_GPL(mt76x02_bss_info_changed);
 
-void mt76x02_config_mac_addr_list(struct mt76x02_dev *dev)
+void mt76x02_CPTCFG_mac_addr_list(struct mt76x02_dev *dev)
 {
 	struct ieee80211_hw *hw = mt76_hw(dev);
 	struct wiphy *wiphy = hw->wiphy;
@@ -694,6 +694,6 @@ void mt76x02_config_mac_addr_list(struct mt76x02_dev *dev)
 	wiphy->addresses = dev->macaddr_list;
 	wiphy->n_addresses = ARRAY_SIZE(dev->macaddr_list);
 }
-EXPORT_SYMBOL_GPL(mt76x02_config_mac_addr_list);
+EXPORT_SYMBOL_GPL(mt76x02_CPTCFG_mac_addr_list);
 
 MODULE_LICENSE("Dual BSD/GPL");

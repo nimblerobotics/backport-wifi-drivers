@@ -19,7 +19,7 @@ static const struct ieee80211_iface_limit if_limits[] = {
 	}, {
 		.max = 16,
 		.types = BIT(NL80211_IFTYPE_AP)
-#ifdef CONFIG_MAC80211_MESH
+#ifdef CPTCFG_MAC80211_MESH
 			 | BIT(NL80211_IFTYPE_MESH_POINT)
 #endif
 	}, {
@@ -234,7 +234,7 @@ mt7996_init_wiphy(struct ieee80211_hw *hw)
 	}
 
 	/* init led callbacks */
-	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
+	if (IS_ENABLED(CPTCFG_MT76_LEDS)) {
 		phy->mt76->leds.cdev.brightness_set = mt7996_led_set_brightness;
 		phy->mt76->leds.cdev.blink_set = mt7996_led_set_blink;
 	}
@@ -306,7 +306,7 @@ void mt7996_mac_init(struct mt7996_dev *dev)
 		mt7996_mac_wtbl_update(dev, i,
 				       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
 
-	if (IS_ENABLED(CONFIG_MT76_LEDS)) {
+	if (IS_ENABLED(CPTCFG_MT76_LEDS)) {
 		i = dev->mphy.leds.pin ? MT_LED_GPIO_MUX3 : MT_LED_GPIO_MUX2;
 		mt76_rmw_field(dev, i, MT_LED_GPIO_SEL_MASK, 4);
 	}
@@ -535,7 +535,7 @@ mt7996_set_stream_he_txbf_caps(struct mt7996_phy *phy,
 	int sts = hweight16(phy->mt76->chainmask);
 	u8 c;
 
-#ifdef CONFIG_MAC80211_MESH
+#ifdef CPTCFG_MAC80211_MESH
 	if (vif == NL80211_IFTYPE_MESH_POINT)
 		return;
 #endif
@@ -834,7 +834,7 @@ __mt7996_set_stream_he_eht_caps(struct mt7996_phy *phy,
 		switch (i) {
 		case NL80211_IFTYPE_STATION:
 		case NL80211_IFTYPE_AP:
-#ifdef CONFIG_MAC80211_MESH
+#ifdef CPTCFG_MAC80211_MESH
 		case NL80211_IFTYPE_MESH_POINT:
 #endif
 			break;

@@ -224,7 +224,7 @@ static inline bool is_mt7996(struct mt76_dev *dev)
 
 static inline bool is_mt7622(struct mt76_dev *dev)
 {
-	if (!IS_ENABLED(CONFIG_MT7622_WMAC))
+	if (!IS_ENABLED(CPTCFG_MT7622_WMAC))
 		return false;
 
 	return mt76_chip(dev) == 0x7622;

@@ -95,7 +95,7 @@ struct mt7915_mem_region {
 	const char *name;
 };
 
-#ifdef CONFIG_DEV_COREDUMP
+#ifdef CPTCFG_DEV_COREDUMP
 
 const struct mt7915_mem_region *
 mt7915_coredump_get_mem_layout(struct mt7915_dev *dev, u32 *num);
@@ -104,7 +104,7 @@ int mt7915_coredump_submit(struct mt7915_dev *dev);
 int mt7915_coredump_register(struct mt7915_dev *dev);
 void mt7915_coredump_unregister(struct mt7915_dev *dev);
 
-#else /* CONFIG_DEV_COREDUMP */
+#else /* CPTCFG_DEV_COREDUMP */
 
 static inline const struct mt7915_mem_region *
 mt7915_coredump_get_mem_layout(struct mt7915_dev *dev, u32 *num)
@@ -131,6 +131,6 @@ static inline void mt7915_coredump_unregister(struct mt7915_dev *dev)
 {
 }
 
-#endif /* CONFIG_DEV_COREDUMP */
+#endif /* CPTCFG_DEV_COREDUMP */
 
 #endif /* _COREDUMP_H_ */

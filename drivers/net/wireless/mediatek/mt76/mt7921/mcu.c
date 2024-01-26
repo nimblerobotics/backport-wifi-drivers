@@ -90,7 +90,7 @@ static int mt7921_mcu_read_eeprom(struct mt792x_dev *dev, u32 offset, u8 *val)
 	return 0;
 }
 
-#ifdef CONFIG_PM
+#ifdef CPTCFG_PM
 
 static int
 mt7921_mcu_set_ipv6_ns_filter(struct mt76_dev *dev,
@@ -120,7 +120,7 @@ mt7921_mcu_set_ipv6_ns_filter(struct mt76_dev *dev,
 
 void mt7921_mcu_set_suspend_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
 {
-	if (IS_ENABLED(CONFIG_IPV6)) {
+	if (IS_ENABLED(CPTCFG_IPV6)) {
 		struct mt76_phy *phy = priv;
 
 		mt7921_mcu_set_ipv6_ns_filter(phy->dev, vif,
@@ -131,7 +131,7 @@ void mt7921_mcu_set_suspend_iter(void *priv, u8 *mac, struct ieee80211_vif *vif)
 	mt76_connac_mcu_set_suspend_iter(priv, mac, vif);
 }
 
-#endif /* CONFIG_PM */
+#endif /* CPTCFG_PM */
 
 static void
 mt7921_mcu_uni_roc_event(struct mt792x_dev *dev, struct sk_buff *skb)

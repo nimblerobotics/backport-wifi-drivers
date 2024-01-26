@@ -541,7 +541,7 @@ static u32 mt7915_rmw(struct mt76_dev *mdev, u32 offset, u32 mask, u32 val)
 	return dev->bus_ops->rmw(mdev, addr, mask, val);
 }
 
-#ifdef CONFIG_NET_MEDIATEK_SOC_WED
+#ifdef CPTCFG_NET_MEDIATEK_SOC_WED
 static int mt7915_mmio_wed_offload_enable(struct mtk_wed_device *wed)
 {
 	struct mt7915_dev *dev;
@@ -706,7 +706,7 @@ static void mt7915_mmio_wed_reset_complete(struct mtk_wed_device *wed)
 int mt7915_mmio_wed_init(struct mt7915_dev *dev, void *pdev_ptr,
 			 bool pci, int *irq)
 {
-#ifdef CONFIG_NET_MEDIATEK_SOC_WED
+#ifdef CPTCFG_NET_MEDIATEK_SOC_WED
 	struct mtk_wed_device *wed = &dev->mt76.mmio.wed;
 	int ret;
 
@@ -1037,7 +1037,7 @@ static int __init mt7915_init(void)
 	if (ret)
 		goto error_pci;
 
-	if (IS_ENABLED(CONFIG_MT798X_WMAC)) {
+	if (IS_ENABLED(CPTCFG_MT798X_WMAC)) {
 		ret = platform_driver_register(&mt798x_wmac_driver);
 		if (ret)
 			goto error_wmac;
@@ -1055,7 +1055,7 @@ error_pci:
 
 static void __exit mt7915_exit(void)
 {
-	if (IS_ENABLED(CONFIG_MT798X_WMAC))
+	if (IS_ENABLED(CPTCFG_MT798X_WMAC))
 		platform_driver_unregister(&mt798x_wmac_driver);
 
 	pci_unregister_driver(&mt7915_pci_driver);

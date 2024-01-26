@@ -185,7 +185,7 @@ static int mt792xu_dma_rx_evt_ep4(struct mt792x_dev *dev)
 
 	mt76_clear(dev, MT_UWFDMA0_GLO_CFG, MT_WFDMA0_GLO_CFG_RX_DMA_EN);
 	mt76_set(dev, MT_WFDMA_HOST_CONFIG,
-		 MT_WFDMA_HOST_CONFIG_USB_RXEVT_EP4_EN);
+		 MT_WFDMA_HOST_CPTCFG_USB_RXEVT_EP4_EN);
 	mt76_set(dev, MT_UWFDMA0_GLO_CFG, MT_WFDMA0_GLO_CFG_RX_DMA_EN);
 
 	return 0;

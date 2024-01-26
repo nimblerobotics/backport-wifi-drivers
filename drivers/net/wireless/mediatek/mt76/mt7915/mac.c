@@ -559,7 +559,7 @@ mt7915_mac_fill_rx(struct mt7915_dev *dev, struct sk_buff *skb,
 static void
 mt7915_mac_fill_rx_vector(struct mt7915_dev *dev, struct sk_buff *skb)
 {
-#ifdef CONFIG_NL80211_TESTMODE
+#ifdef CPTCFG_NL80211_TESTMODE
 	struct mt7915_phy *phy = &dev->phy;
 	__le32 *rxd = (__le32 *)skb->data;
 	__le32 *rxv_hdr = rxd + 2;
@@ -609,7 +609,7 @@ static void
 mt7915_mac_write_txwi_tm(struct mt7915_phy *phy, __le32 *txwi,
 			 struct sk_buff *skb)
 {
-#ifdef CONFIG_NL80211_TESTMODE
+#ifdef CPTCFG_NL80211_TESTMODE
 	struct mt76_testmode_data *td = &phy->mt76->test;
 	const struct ieee80211_rate *r;
 	u8 bw, mode, nss = td->tx_rate_nss;

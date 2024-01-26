@@ -160,7 +160,7 @@ int mt7925_mcu_update_arp_filter(struct mt76_dev *dev,
 	return mt76_mcu_skb_send_msg(dev, skb, MCU_UNI_CMD(OFFLOAD), true);
 }
 
-#ifdef CONFIG_PM
+#ifdef CPTCFG_PM
 static int
 mt7925_connac_mcu_set_wow_ctrl(struct mt76_phy *phy, struct ieee80211_vif *vif,
 			       bool suspend, struct cfg80211_wowlan *wowlan)
@@ -269,7 +269,7 @@ void mt7925_mcu_set_suspend_iter(void *priv, u8 *mac,
 	mt7925_connac_mcu_set_wow_ctrl(phy, vif, suspend, wowlan);
 }
 
-#endif /* CONFIG_PM */
+#endif /* CPTCFG_PM */
 
 static void
 mt7925_mcu_connection_loss_iter(void *priv, u8 *mac,

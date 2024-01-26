@@ -745,7 +745,7 @@ struct mt76_phy {
 	u8 antenna_mask;
 	u16 chainmask;
 
-#ifdef CONFIG_NL80211_TESTMODE
+#ifdef CPTCFG_NL80211_TESTMODE
 	struct mt76_testmode_data test;
 #endif
 
@@ -855,7 +855,7 @@ struct mt76_dev {
 
 	u32 rxfilter;
 
-#ifdef CONFIG_NL80211_TESTMODE
+#ifdef CPTCFG_NL80211_TESTMODE
 	const struct mt76_testmode_ops *test_ops;
 	struct {
 		const char *name;
@@ -1248,7 +1248,7 @@ static inline u8 mt76_tx_power_nss_delta(u8 nss)
 
 static inline bool mt76_testmode_enabled(struct mt76_phy *phy)
 {
-#ifdef CONFIG_NL80211_TESTMODE
+#ifdef CPTCFG_NL80211_TESTMODE
 	return phy->test.state != MT76_TM_STATE_OFF;
 #else
 	return false;
@@ -1259,7 +1259,7 @@ static inline bool mt76_is_testmode_skb(struct mt76_dev *dev,
 					struct sk_buff *skb,
 					struct ieee80211_hw **hw)
 {
-#ifdef CONFIG_NL80211_TESTMODE
+#ifdef CPTCFG_NL80211_TESTMODE
 	int i;
 
 	for (i = 0; i < ARRAY_SIZE(dev->phys); i++) {
@@ -1371,7 +1371,7 @@ int mt76_testmode_alloc_skb(struct mt76_phy *phy, u32 len);
 
 static inline void mt76_testmode_reset(struct mt76_phy *phy, bool disable)
 {
-#ifdef CONFIG_NL80211_TESTMODE
+#ifdef CPTCFG_NL80211_TESTMODE
 	enum mt76_testmode_state state = MT76_TM_STATE_IDLE;
 
 	if (disable || phy->test.state == MT76_TM_STATE_OFF)
