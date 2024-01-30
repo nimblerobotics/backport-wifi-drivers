@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 kernel_version="5.10.104-tegra"
 tmp_folder=$(mktemp -d)
-mkdir -p "$tmp_folder"/lib/firmware/update
-cp -r firmware/* "$tmp_folder"/lib/firmware/update
+mkdir -p "$tmp_folder"/lib/firmware/updates
+cp -r firmware/* "$tmp_folder"/lib/firmware/updates
 mkdir -p "$tmp_folder"/lib/modules/$kernel_version/updates
 # Find all .ko files and copy them to the correct folder that keeps hierarchy
 find . -name "*.ko" -exec cp -v --parents {} "$tmp_folder"/lib/modules/$kernel_version/updates \;
