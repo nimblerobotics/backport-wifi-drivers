@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+depmod -a && echo "Depmod done"
+echo "Unisntalling done"
+echo "Please reboot to apply changes"

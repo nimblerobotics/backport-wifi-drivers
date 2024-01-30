@@ -9,8 +9,10 @@ find . -name "*.ko" -exec cp -v --parents {} "$tmp_folder"/lib/modules/$kernel_v
 # Copy the debian folder to the tmp folder
 mkdir -p "$tmp_folder"/DEBIAN
 cp debian/* "$tmp_folder"/DEBIAN
-cd "$tmp_folder" || exit
+pushd "$tmp_folder" || exit
 # Create the debian package
 name=$(grep -oP '(?<=Package: ).*' "$tmp_folder"/DEBIAN/control)
 version=$(grep -oP '(?<=Version: ).*' "$tmp_folder"/DEBIAN/control)
 dpkg-deb --build "$tmp_folder" "$name"-"$version"+$kernel_version.deb
+popd || exit
+mv "$tmp_folder"/"$name"-"$version"+$kernel_version.deb ./
