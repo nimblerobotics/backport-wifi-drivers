@@ -7,4 +7,5 @@ Maintainer: Gen Xu <gen@nimble.ai>
 Version: 0.1.1
 Description: backport wifi drivers for Jetson Linux
 Depends: nvidia-l4t-kernel (= 5.10.104-tegra-35.2.1-20230124153320)
+Conflicts: backport-iwlwifi-dkms
 Installed-Size: 0
